@@ -1,18 +1,19 @@
-import { ReactNode, createContext, useState } from "react";
-import { boardRender } from "../services/board-render/board";
-import { Piece } from "../services/board-render/pieces";
-import { movePiece } from "../services/moves/move-piece";
-import { possibleSquaresCalc } from "../services/moves/possible-squares";
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
+import { type ReactNode, createContext, useState, type ReactElement } from 'react'
+import { boardRender } from '../services/board-render/board'
+import { type Piece } from '../services/board-render/pieces'
+import { movePiece } from '../services/moves/move-piece'
+import { possibleSquaresCalc } from '../services/moves/possible-squares'
 
 interface SquareProps {
-  id: string,
-  color: string,
+  id: string
+  color: string
   havePiece: Piece | false
 }
 
 interface SquarePropsMove {
-  id: string,
-  color: string,
+  id: string
+  color: string
   havePiece: Piece
 }
 
@@ -24,39 +25,44 @@ interface BoardProps {
 
 export const BoardContext = createContext({} as BoardProps)
 
-export function BoardContextProvider({ children }: { children: ReactNode}) {
-
+export function BoardContextProvider ({ children }: { children: ReactNode }): ReactElement {
   const [boardList, setBoardList] = useState(boardRender())
   const [currSquare, setCurrSquare] = useState({} as SquareProps)
   const [possibleSquares, setPossibleSquares] = useState([] as SquareProps[])
 
-  function verifySquare(square: SquareProps) {
+  function verifySquare (square: SquareProps): void {
     if (!square.havePiece && !currSquare.havePiece) {
       return
     }
 
-    if(currSquare.havePiece) {
-      if(square.havePiece) {
-        if(square.havePiece.color === currSquare.havePiece.color) {
+    if (currSquare.havePiece) {
+      if (square.havePiece) {
+        if (square.havePiece.color === currSquare.havePiece.color) {
           setCurrSquare(square)
-          return setPossibleSquares(possibleSquaresCalc(square as SquarePropsMove, boardList as SquarePropsMove[])!)
+          const newPossibles = possibleSquaresCalc(square as SquarePropsMove, boardList as SquarePropsMove[])
+          if (newPossibles) {
+            setPossibleSquares(newPossibles)
+          }
+          return
         }
       }
       handleMovePiece(square)
-
     } else {
       setCurrSquare(square)
-      return setPossibleSquares(possibleSquaresCalc(square as SquarePropsMove, boardList as SquarePropsMove[])!)
+      const newPossibles = possibleSquaresCalc(square as SquarePropsMove, boardList as SquarePropsMove[])
+      if (newPossibles) {
+        setPossibleSquares(newPossibles)
+      }
     }
   }
-  
-  function handleMovePiece(newSquare: SquareProps) {
-    const {prevSquare, movedSquare} = movePiece(currSquare, newSquare)
+
+  function handleMovePiece (newSquare: SquareProps): void {
+    const { prevSquare, movedSquare } = movePiece(currSquare, newSquare)
     const newBoard = boardList.map(square => {
-      if(square.id === prevSquare.id) {
-        return square = prevSquare
+      if (square.id === prevSquare.id) {
+        square = prevSquare
       } else if (square.id === movedSquare.id) {
-        return square = movedSquare
+        square = movedSquare
       }
       return square
     })

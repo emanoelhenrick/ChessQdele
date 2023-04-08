@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const SquareContainer = styled.div`
   display: flex;
@@ -6,7 +6,7 @@ export const SquareContainer = styled.div`
   align-items: center;
   width: 100px;
   height: 100px;
-  background-color: ${props => props.color === "white" ? "silver" : "gray"};
+  background-color: ${props => props.color === 'white' ? 'silver' : 'gray'};
   position: relative;
 
   h3 {

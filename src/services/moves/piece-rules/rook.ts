@@ -1,35 +1,34 @@
-import { Piece } from "../../board-render/pieces"
-import { isBorder, isEnemyPiece, isSameColor } from "./utils/utils"
+import { type Piece } from '../../board-render/pieces'
+import { isBorder, isEnemyPiece, isSameColor } from './utils/utils'
 
 interface SquareProps {
-  id: string,
-  color: string,
+  id: string
+  color: string
   havePiece: Piece
 }
 
-export function ROOKpossibleSquares(currSquare: SquareProps, boardList: SquareProps[], squareIndex: any) {
-  if(!currSquare.havePiece) {
-    return 
+export function ROOKpossibleSquares (currSquare: SquareProps, boardList: SquareProps[], squareIndex: any): SquareProps[] | false {
+  if (!currSquare.havePiece) {
+    return false
   }
 
   const possibleSquares: SquareProps[] = []
 
   currSquare.havePiece.squareRules.forEach(rule => {
-    let ruleNumber = Number(rule)
-    let possibleSquaresForRule: SquareProps[] = []
-    for (let i = squareIndex - ruleNumber; i <= 63 && i >= 0; i -= ruleNumber){
-      
-      if(isSameColor(i, boardList, currSquare)) {
+    const ruleNumber = Number(rule)
+    const possibleSquaresForRule: SquareProps[] = []
+    for (let i = squareIndex - ruleNumber; i <= 63 && i >= 0; i -= ruleNumber) {
+      if (isSameColor(i, boardList, currSquare)) {
         possibleSquares.push(...possibleSquaresForRule)
         return
       }
 
-      if(isEnemyPiece(i, boardList, currSquare)) {
-        if(ruleNumber === -1 && currSquare.id.includes('h')) {
+      if (isEnemyPiece(i, boardList, currSquare)) {
+        if (ruleNumber === -1 && currSquare.id.includes('h')) {
           return
         }
 
-        if(ruleNumber === 1 && currSquare.id.includes('a')) {
+        if (ruleNumber === 1 && currSquare.id.includes('a')) {
           return
         }
 
@@ -38,12 +37,12 @@ export function ROOKpossibleSquares(currSquare: SquareProps, boardList: SquarePr
         return
       }
 
-      if(ruleNumber === 1 || ruleNumber === -1) {
-        if(ruleNumber === 1 && currSquare.id.includes('h')) {
+      if (ruleNumber === 1 || ruleNumber === -1) {
+        if (ruleNumber === 1 && currSquare.id.includes('h')) {
           return
         }
 
-        if(isBorder(i, boardList)){
+        if (isBorder(i, boardList)) {
           possibleSquaresForRule.push(boardList[i])
           possibleSquares.push(...possibleSquaresForRule)
           break

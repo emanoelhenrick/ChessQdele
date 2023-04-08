@@ -1,15 +1,9 @@
-import { getPieceSVG } from "../../assets/chessPieces";
-import { Piece } from "../../services/board-render/pieces";
-import { PossibleSquare, SquareContainer } from "./styles";
+import { type ReactElement } from 'react'
+import { getPieceSVG } from '../../assets/chessPieces'
+import { PossibleSquare, SquareContainer } from './styles'
 
-interface SquareProps {
-  id: string,
-  color: string,
-  piece: Piece | false
-}
-
-export function Square({ square, select, isPossible }: any) {
-  const { havePiece: piece, color} = square
+export function Square ({ square, select, isPossible }: any): ReactElement {
+  const { havePiece: piece, color } = square
 
   return (
     <SquareContainer

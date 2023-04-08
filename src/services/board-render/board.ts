@@ -1,14 +1,13 @@
-import { Piece, piecesGenerator } from "./pieces"
-import { squareCalc } from "./squareCalc"
+import { type Piece, piecesGenerator } from './pieces'
+import { squareCalc } from './squareCalc'
 
 interface SquareProps {
-  id: string,
-  color: string,
+  id: string
+  color: string
   havePiece: Piece | false
 }
 
-export function boardRender() {
-  
+export function boardRender (): SquareProps[] {
   const squaresList = squareCalc()
   const piecesList = piecesGenerator()
   const initialBoard: SquareProps[] = squaresList.map(square => {
@@ -17,15 +16,16 @@ export function boardRender() {
       return {
         id: square.id,
         color: square.color,
-        havePiece: piece}
+        havePiece: piece
       }
-
-      return {
-        id: square.id,
-        color: square.color,
-        havePiece: false}
     }
-  )
+
+    return {
+      id: square.id,
+      color: square.color,
+      havePiece: false
+    }
+  })
 
   return initialBoard
 }

@@ -12,53 +12,53 @@ import b_pawn from './SVG/b_pawn.svg'
 import b_queen from './SVG/b_queen.svg'
 import b_tower from './SVG/b_tower.svg'
 
-
-export function getPieceSVG(piece: string, color: string) {
+export function getPieceSVG (piece: string, color: string): string | undefined {
   switch (color) {
-    case "white":
+    case 'white':
 
-      if(piece.includes("bishop")){
+      if (piece.includes('bishop')) {
         return w_bishop
       }
-      if(piece.includes("king")){
+      if (piece.includes('king')) {
         return w_king
       }
-      if(piece.includes("knight")){
+      if (piece.includes('knight')) {
         return w_knight
       }
-      if(piece.includes("pawn")){
+      if (piece.includes('pawn')) {
         return w_pawn
       }
-      if(piece.includes("queen")){
+      if (piece.includes('queen')) {
         return w_queen
       }
-      if(piece.includes("rook")){
+      if (piece.includes('rook')) {
         return w_tower
       }
-      
-      break;
+      break
 
-    case "black":
+    case 'black':
 
-      if(piece.includes("bishop")){
+      if (piece.includes('bishop')) {
         return b_bishop
       }
-      if(piece.includes("king")){
+      if (piece.includes('king')) {
         return b_king
       }
-      if(piece.includes("knight")){
+      if (piece.includes('knight')) {
         return b_knight
       }
-      if(piece.includes("pawn")){
+      if (piece.includes('pawn')) {
         return b_pawn
       }
-      if(piece.includes("queen")){
+      if (piece.includes('queen')) {
         return b_queen
       }
-      if(piece.includes("rook")){
+      if (piece.includes('rook')) {
         return b_tower
       }
+      break
 
-      break;
+    default:
+      return undefined
   }
 }

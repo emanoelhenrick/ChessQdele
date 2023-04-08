@@ -1,11 +1,11 @@
-type SquareProps = {
+interface SquareProps {
   id: string
   color: string
 }
 
-export function squareCalc() {
-  const letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
-  const nums = ["8", "7", "6", "5", "4", "3", "2", "1"]
+export function squareCalc (): SquareProps[] {
+  const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+  const nums = ['8', '7', '6', '5', '4', '3', '2', '1']
   const boardList: string[] = []
 
   nums.forEach(num => {
@@ -19,16 +19,16 @@ export function squareCalc() {
     const num = square.split('')
     const isEven = Number(num[1]) % 2 === 0
 
-    if(isEven){
-      if(boardTemp.length % 2 === 0) {
-        return boardTemp.push({id: square, color: "white"})
+    if (isEven) {
+      if (boardTemp.length % 2 === 0) {
+        return boardTemp.push({ id: square, color: 'white' })
       }
-      boardTemp.push({id: square, color: "black"})
+      boardTemp.push({ id: square, color: 'black' })
     } else {
-      if(boardTemp.length % 2 === 0) {
-        return boardTemp.push({id: square, color: "black"})
+      if (boardTemp.length % 2 === 0) {
+        return boardTemp.push({ id: square, color: 'black' })
       }
-      boardTemp.push({id: square, color: "white"})
+      boardTemp.push({ id: square, color: 'white' })
     }
   })
 
