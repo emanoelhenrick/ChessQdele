@@ -8,7 +8,7 @@ import { possibleSquaresCalc } from '../services/moves/possible-squares'
 interface SquareProps {
   id: string
   color: string
-  havePiece: Piece | false
+  havePiece?: Piece
 }
 
 interface SquarePropsMove {
@@ -28,7 +28,12 @@ export const BoardContext = createContext({} as BoardProps)
 export function BoardContextProvider ({ children }: { children: ReactNode }): ReactElement {
   const [boardList, setBoardList] = useState(boardRender())
   const [currSquare, setCurrSquare] = useState({} as SquareProps)
-  const [possibleSquares, setPossibleSquares] = useState([] as SquareProps[])
+  const [possibleSquares, setPossibleSquares] = useState<SquareProps[]>([])
+  const [isKingInCheck, setIsKingInCheck] = useState<SquareProps[]>([])
+
+  if (isKingInCheck.length > 0) {
+    console.log('CHECK!!')
+  }
 
   function verifySquare (square: SquareProps): void {
     if (!square.havePiece && !currSquare.havePiece) {
@@ -73,8 +78,6 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       return square
     })
 
-    console.log(boardList)
-
     setCurrSquare({} as SquareProps)
     setPossibleSquares([] as SquareProps[])
     possiblesSquaresAllPieces(newBoard)
@@ -89,7 +92,35 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       return square
     })
 
+    const check: SquareProps[] = verifyCheck(board)
+    if (check) {
+      setIsKingInCheck(check)
+    } else {
+      setIsKingInCheck([])
+    }
+
     setBoardList(board)
+  }
+
+  function verifyCheck (board: SquareProps[]): SquareProps[] {
+    const isCheck: SquareProps[] = []
+    board.forEach(sq => {
+      if (!sq.havePiece && !sq.havePiece.possibleMoves) {
+        return
+      }
+
+      sq.havePiece.possibleMoves.forEach(square => {
+        if (!square.havePiece) {
+          return
+        }
+
+        if (square.havePiece.name.includes('king')) {
+          isCheck.push(square)
+        }
+      })
+    })
+
+    return isCheck
   }
 
   return (

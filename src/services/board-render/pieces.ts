@@ -42,8 +42,9 @@ export class Piece {
   public name: string
   public squareRules: string[] | number[]
   public color!: string
-  public firstMove?: boolean
   public possibleMoves?: SquareProps[]
+
+  public firstMove?: boolean
 
   constructor (id: string) {
     const piece = pieces.find(square => {
