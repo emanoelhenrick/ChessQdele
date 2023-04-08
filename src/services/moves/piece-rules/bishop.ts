@@ -19,11 +19,13 @@ export function BISHOPpossibleSquares (currSquare: SquareProps, boardList: Squar
     const possibleSquaresForRule: SquareProps[] = []
     for (let i = squareIndex - ruleNumber; i <= 63 && i >= 0; i -= ruleNumber) {
       if ((ruleNumber === 7 || ruleNumber === -9) && boardList[i].id.includes('h')) {
+        possibleSquaresForRule.push(boardList[i])
         possibleSquares.push(...possibleSquaresForRule)
         return
       }
 
       if ((ruleNumber === -7 || ruleNumber === 9) && boardList[i].id.includes('a')) {
+        possibleSquaresForRule.push(boardList[i])
         possibleSquares.push(...possibleSquaresForRule)
         return
       }

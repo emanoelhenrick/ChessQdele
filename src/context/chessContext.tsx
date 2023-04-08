@@ -57,7 +57,13 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
   }
 
   function handleMovePiece (newSquare: SquareProps): void {
-    const { prevSquare, movedSquare } = movePiece(currSquare, newSquare)
+    const movedHistory = movePiece(currSquare, newSquare, possibleSquares)
+    if (!movedHistory) {
+      return
+    }
+
+    const { prevSquare, movedSquare } = movedHistory
+
     const newBoard = boardList.map(square => {
       if (square.id === prevSquare.id) {
         square = prevSquare
@@ -66,6 +72,8 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       }
       return square
     })
+
+    console.log(boardList)
 
     setCurrSquare({} as SquareProps)
     setPossibleSquares([] as SquareProps[])
@@ -82,7 +90,6 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
     })
 
     setBoardList(board)
-    console.log(boardList)
   }
 
   return (

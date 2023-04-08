@@ -11,7 +11,11 @@ interface MovePiece {
   movedSquare: SquareProps
 }
 
-export function movePiece (currSquare: SquareProps, nextSquare: SquareProps): MovePiece {
+export function movePiece (currSquare: SquareProps, nextSquare: SquareProps, possibleSquares: SquareProps[]): MovePiece | undefined {
+  if (!possibleSquares.some(square => square.id === nextSquare.id)) {
+    return undefined
+  }
+
   nextSquare.havePiece = currSquare.havePiece
   const prevSquare = nextSquare
 
