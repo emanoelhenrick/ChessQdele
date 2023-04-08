@@ -8,7 +8,7 @@ import { possibleSquaresCalc } from '../services/moves/possible-squares'
 interface SquareProps {
   id: string
   color: string
-  havePiece?: Piece
+  havePiece: Piece | false
 }
 
 interface SquarePropsMove {
@@ -87,7 +87,7 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
     const board = newBoard.map(square => {
       const piece = square.havePiece
       if (piece) {
-        piece.possibleMoves = possibleSquaresCalc(square, newBoard)
+        piece.possibleMoves = possibleSquaresCalc(square as SquarePropsMove, newBoard as SquarePropsMove[]) as SquarePropsMove[]
       }
       return square
     })
@@ -102,10 +102,10 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
     setBoardList(board)
   }
 
-  function verifyCheck (board: SquareProps[]): SquareProps[] {
+  function verifyCheck (board: SquareProps[] | any): SquareProps[] {
     const isCheck: SquareProps[] = []
-    board.forEach(sq => {
-      if (!sq.havePiece && !sq.havePiece.possibleMoves) {
+    board.forEach((sq: { havePiece: { possibleMoves: any[] } }) => {
+      if (!sq.havePiece) {
         return
       }
 
