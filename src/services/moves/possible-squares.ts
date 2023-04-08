@@ -1,7 +1,9 @@
 import { type Piece } from '../board-render/pieces'
 import { BISHOPpossibleSquares } from './piece-rules/bishop'
+import { KINGpossibleSquares } from './piece-rules/king'
 import { KNIGHTpossibleSquares } from './piece-rules/knight'
 import { PAWNpossibleSquares } from './piece-rules/pawn'
+import { QUEENpossibleSquares } from './piece-rules/queen'
 import { ROOKpossibleSquares } from './piece-rules/rook'
 
 interface SquareProps {
@@ -31,6 +33,14 @@ export function possibleSquaresCalc (currSquare: SquareProps, boardList: SquareP
 
   if (currSquare.havePiece.name.includes('bishop')) {
     return BISHOPpossibleSquares(currSquare, boardList, squareIndex)
+  }
+
+  if (currSquare.havePiece.name.includes('queen')) {
+    return QUEENpossibleSquares(currSquare, boardList, squareIndex)
+  }
+
+  if (currSquare.havePiece.name.includes('king')) {
+    return KINGpossibleSquares(currSquare, boardList, squareIndex)
   }
 
   return false
