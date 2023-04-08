@@ -17,6 +17,7 @@ export const SquareContainer = styled.div`
 
   img {
     width: 50px;
+    cursor: pointer;
   }
 `
 
