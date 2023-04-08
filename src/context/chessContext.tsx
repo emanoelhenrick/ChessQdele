@@ -67,9 +67,22 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       return square
     })
 
-    setBoardList(newBoard)
     setCurrSquare({} as SquareProps)
     setPossibleSquares([] as SquareProps[])
+    possiblesSquaresAllPieces(newBoard)
+  }
+
+  function possiblesSquaresAllPieces (newBoard: SquareProps[]): void {
+    const board = newBoard.map(square => {
+      const piece = square.havePiece
+      if (piece) {
+        piece.possibleMoves = possibleSquaresCalc(square, newBoard)
+      }
+      return square
+    })
+
+    setBoardList(board)
+    console.log(boardList)
   }
 
   return (

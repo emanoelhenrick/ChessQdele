@@ -63,7 +63,7 @@ export function QUEENpossibleSquares (currSquare: SquareProps, boardList: Square
         if (isBorder(i, boardList)) {
           possibleSquaresForRule.push(boardList[i])
           possibleSquares.push(...possibleSquaresForRule)
-          break
+          return
         }
       }
 

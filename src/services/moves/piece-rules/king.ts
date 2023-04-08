@@ -19,6 +19,10 @@ export function KINGpossibleSquares (currSquare: SquareProps, boardList: SquareP
     const possibleSquaresForRule: SquareProps[] = []
     const i = squareIndex - ruleNumber
 
+    if (i < 0 || i > 63) {
+      return
+    }
+
     const block =
         ((ruleNumber === 1 || ruleNumber === 9) && currSquare.id.includes('a')) ||
         ((ruleNumber === -1 || ruleNumber === -9) && currSquare.id.includes('h')) ||
@@ -45,24 +49,11 @@ export function KINGpossibleSquares (currSquare: SquareProps, boardList: SquareP
       return
     }
 
-    const excess =
-        ((ruleNumber === -7) && (boardList[i].id.includes('h') ||
-        boardList[i].id.includes('a'))) ||
-        ((ruleNumber === 7) && (boardList[i].id.includes('a') ||
-        boardList[i].id.includes('h'))) ||
-        ((ruleNumber === 9) && boardList[i].id.includes('a')) ||
-        ((ruleNumber === -9) && boardList[i].id.includes('h'))
-
-    if (excess) {
-      possibleSquaresForRule.push(boardList[i])
-      possibleSquares.push(...possibleSquaresForRule)
-      return
-    }
-
     if (ruleNumber === 1 || ruleNumber === -1) {
       if (isBorder(i, boardList)) {
         possibleSquaresForRule.push(boardList[i])
         possibleSquares.push(...possibleSquaresForRule)
+        return
       }
     }
 

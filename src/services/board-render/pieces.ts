@@ -1,4 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+
+interface SquareProps {
+  id: string
+  color: string
+  havePiece: Piece | false
+}
 const pieces = [
   {
     name: 'rook',
@@ -37,6 +43,7 @@ export class Piece {
   public squareRules: string[] | number[]
   public color!: string
   public firstMove?: boolean
+  public possibleMoves?: SquareProps[]
 
   constructor (id: string) {
     const piece = pieces.find(square => {
