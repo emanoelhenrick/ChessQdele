@@ -1,7 +1,8 @@
 import { useContext, type ReactElement } from 'react'
 import { Square } from '../Square'
-import { BoardContainer } from './styles'
+import { BoardContainer, EatedPieces } from './styles'
 import { BoardContext } from '../../context/chessContext'
+import { getPieceSVG } from '../../assets/chessPieces'
 
 export function Board (): ReactElement {
   const { boardList, verifySquare, possibleSquares, eatedPieces } = useContext(BoardContext)
@@ -14,12 +15,26 @@ export function Board (): ReactElement {
     if (color === 'black') {
       if (eatedPieces.black.length > 0) {
         return eatedPieces.black.map(p => {
-          return <span key={p.name}>{p.name}</span>
+          return (
+            <EatedPieces
+            key={p.name}
+            src={getPieceSVG(p.name, p.color)}
+            alt=""
+            className={(p.name.includes('queen') || p.name.includes('king')) ? 'resize' : ''}
+          />
+          )
         })
       }
     } else {
       return eatedPieces.white.map(p => {
-        return <span key={p.name}>{p.name}</span>
+        return (
+          <EatedPieces
+            key={p.name}
+            src={getPieceSVG(p.name, p.color)}
+            alt=""
+            className={(p.name.includes('queen') || p.name.includes('king')) ? 'resize' : ''}
+          />
+        )
       })
     }
   }

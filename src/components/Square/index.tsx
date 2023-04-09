@@ -10,8 +10,12 @@ export function Square ({ square, select, isPossible }: any): ReactElement {
       color={color}
       onClick={() => select(square)}
     >
-      {piece && <img src={getPieceSVG(piece.name, piece.color)} alt="" />}
-      <h3>{square.id}</h3>
+      {piece &&
+        <img
+          src={getPieceSVG(piece.name, piece.color)}
+          alt=""
+          className={(piece.name.includes('queen') || piece.name.includes('king')) ? 'resize' : ''}
+        />}
       {isPossible(square) && <PossibleSquare />}
     </SquareContainer>
   )

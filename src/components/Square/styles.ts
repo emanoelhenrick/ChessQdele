@@ -4,8 +4,8 @@ export const SquareContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   background-color: ${props => props.color === 'white' ? 'silver' : 'gray'};
   position: relative;
 
@@ -16,8 +16,12 @@ export const SquareContainer = styled.div`
   }
 
   img {
-    width: 50px;
+    width: 32px;
     cursor: pointer;
+  }
+
+  .resize {
+    width: 42px;
   }
 `
 
