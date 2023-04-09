@@ -9,11 +9,17 @@ interface SquareProps {
 interface MovePiece {
   prevSquare: SquareProps
   movedSquare: SquareProps
+  eatedPiece: Piece | undefined
 }
 
 export function movePiece (currSquare: SquareProps, nextSquare: SquareProps, possibleSquares: SquareProps[]): MovePiece | undefined {
   if (!possibleSquares.some(square => square.id === nextSquare.id)) {
     return undefined
+  }
+
+  let eatedPiece
+  if (nextSquare.havePiece) {
+    eatedPiece = nextSquare.havePiece
   }
 
   nextSquare.havePiece = currSquare.havePiece
@@ -32,6 +38,7 @@ export function movePiece (currSquare: SquareProps, nextSquare: SquareProps, pos
 
   return {
     prevSquare,
-    movedSquare
+    movedSquare,
+    eatedPiece
   }
 }

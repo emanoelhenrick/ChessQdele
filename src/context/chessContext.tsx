@@ -21,7 +21,12 @@ interface BoardProps {
   boardList: SquareProps[]
   verifySquare: (square: SquareProps) => void
   possibleSquares: SquareProps[]
-  player: string
+  eatedPieces: EatedPieces
+}
+
+interface EatedPieces {
+  white: Piece[]
+  black: Piece[]
 }
 
 export const BoardContext = createContext({} as BoardProps)
@@ -32,6 +37,7 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
   const [possibleSquares, setPossibleSquares] = useState<SquareProps[]>([])
   const [isKingInCheck, setIsKingInCheck] = useState<SquareProps[]>([])
   const [player, setPlayer] = useState('white')
+  const [eatedPieces, setEatedPieces] = useState<EatedPieces>({ white: [], black: [] })
 
   if (isKingInCheck.length > 0) {
     console.log('CHECK!!')
@@ -41,8 +47,6 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
     if (!square.havePiece && !currSquare.havePiece) {
       return
     }
-
-    console.log(square, currSquare)
 
     if (currSquare.havePiece) {
       if (currSquare.havePiece.color !== player) {
@@ -77,7 +81,19 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       return
     }
 
-    const { prevSquare, movedSquare } = movedHistory
+    const { prevSquare, movedSquare, eatedPiece } = movedHistory
+
+    if (eatedPiece && player === 'white') {
+      const eated = eatedPieces
+      eatedPieces.white.push(eatedPiece)
+      setEatedPieces(eated)
+    }
+
+    if (eatedPiece && player === 'black') {
+      const eated = eatedPieces
+      eatedPieces.black.push(eatedPiece)
+      setEatedPieces(eated)
+    }
 
     const newBoard = boardList.map(square => {
       if (square.id === prevSquare.id) {
@@ -145,7 +161,7 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       boardList,
       possibleSquares,
       verifySquare,
-      player
+      eatedPieces
     }}
     >
       { children }
