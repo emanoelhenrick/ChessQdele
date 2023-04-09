@@ -21,6 +21,7 @@ interface BoardProps {
   boardList: SquareProps[]
   verifySquare: (square: SquareProps) => void
   possibleSquares: SquareProps[]
+  player: string
 }
 
 export const BoardContext = createContext({} as BoardProps)
@@ -30,6 +31,7 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
   const [currSquare, setCurrSquare] = useState({} as SquareProps)
   const [possibleSquares, setPossibleSquares] = useState<SquareProps[]>([])
   const [isKingInCheck, setIsKingInCheck] = useState<SquareProps[]>([])
+  const [player, setPlayer] = useState('white')
 
   if (isKingInCheck.length > 0) {
     console.log('CHECK!!')
@@ -40,7 +42,12 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       return
     }
 
+    console.log(square, currSquare)
+
     if (currSquare.havePiece) {
+      if (currSquare.havePiece.color !== player) {
+        return
+      }
       if (square.havePiece) {
         if (square.havePiece.color === currSquare.havePiece.color) {
           setCurrSquare(square)
@@ -53,6 +60,9 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       }
       handleMovePiece(square)
     } else {
+      if (square.havePiece.color !== player) {
+        return
+      }
       setCurrSquare(square)
       const newPossibles = possibleSquaresCalc(square as SquarePropsMove, boardList as SquarePropsMove[])
       if (newPossibles) {
@@ -77,6 +87,12 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
       }
       return square
     })
+
+    if (player === 'white') {
+      setPlayer('black')
+    } else {
+      setPlayer('white')
+    }
 
     setCurrSquare({} as SquareProps)
     setPossibleSquares([] as SquareProps[])
@@ -128,7 +144,8 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
     value={{
       boardList,
       possibleSquares,
-      verifySquare
+      verifySquare,
+      player
     }}
     >
       { children }
