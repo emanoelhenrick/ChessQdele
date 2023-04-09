@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { type ReactNode, createContext, useState, type ReactElement } from 'react'
+import { type ReactNode, createContext, useState, type ReactElement, useEffect } from 'react'
 import { boardRender } from '../services/board-render/board'
 import { type Piece } from '../services/board-render/pieces'
 import { movePiece } from '../services/moves/move-piece'
 import { possibleSquaresCalc } from '../services/moves/possible-squares'
+import { Game } from 'js-chess-engine'
 
 interface SquareProps {
   id: string
@@ -29,6 +30,8 @@ interface EatedPieces {
   black: Piece[]
 }
 
+const game = new Game()
+
 export const BoardContext = createContext({} as BoardProps)
 
 export function BoardContextProvider ({ children }: { children: ReactNode }): ReactElement {
@@ -42,6 +45,20 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
   if (isKingInCheck.length > 0) {
     console.log('CHECK!!')
   }
+
+  useEffect(() => {
+    if (player === 'black') {
+      const aiMove = game.aiMove(1)
+      const keys = Object.keys(aiMove)
+      const squareId = keys[0].toLowerCase()
+      const nextMove = aiMove[keys[0]].toLowerCase()
+      const curr = boardList.find(square => square.id === squareId)
+      const next = boardList.find(square => square.id === nextMove)
+      setTimeout(() => {
+        handleMovePiece(next, curr)
+      }, 1500)
+    }
+  }, [player])
 
   function verifySquare (square: SquareProps): void {
     if (!square.havePiece && !currSquare.havePiece) {
@@ -75,13 +92,27 @@ export function BoardContextProvider ({ children }: { children: ReactNode }): Re
     }
   }
 
-  function handleMovePiece (newSquare: SquareProps): void {
-    const movedHistory = movePiece(currSquare, newSquare, possibleSquares)
+  function handleMovePiece (newSquare: SquareProps, currentSquare?: SquareProps): void {
+    const possible = () => {
+      if (currentSquare) {
+        return [newSquare]
+      } else {
+        return possibleSquares
+      }
+    }
+
+    const movedHistory = movePiece(currentSquare ?? currSquare, newSquare, possible())
+
     if (!movedHistory) {
       return
     }
 
     const { prevSquare, movedSquare, eatedPiece } = movedHistory
+    if (player === 'white') {
+      const prevMove = movedSquare.id.toUpperCase()
+      const nextMove = prevSquare.id.toUpperCase()
+      game.move(prevMove, nextMove)
+    }
 
     if (eatedPiece && player === 'white') {
       const eated = eatedPieces
